@@ -1,0 +1,35 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+html {
+  font-family: "Segoe UI", "Arial", "Tahoma", sans-serif;
+  background-color: #BBBBBB;
+}
+
+.main-container {
+  padding: 10px;
+}
+
+.main-title {
+  font-size: 36px;
+  padding: 10px;
+}
+
+.main-text {
+  line-height: 1.5;
+  font-size: 18px;
+  padding-left: 12px;
+}
+
+
+.stocks {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
