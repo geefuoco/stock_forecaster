@@ -1,0 +1,7 @@
+alpaca-trade-api==2.3.0
+Flask==2.1.2
+numpy 
+pandas==1.4.2
+pandas-datareader
+scikit-learn==1.1.0
+tensorflow==2.9.1
