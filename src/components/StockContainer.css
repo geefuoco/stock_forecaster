@@ -1,4 +1,16 @@
 .stock-container  {
-  padding: 10px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #CCC;
+  box-shadow: 0 0 8px gray;
+}
 
+.stock-name {
+  font-size: 36px;  
+  color: #FFF;
+  text-shadow: 0 2px 4px black;
+}
+
+.stock-price {
+  font-size: 32px
 }
