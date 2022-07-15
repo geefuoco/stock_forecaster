@@ -9,7 +9,7 @@ interface Props {
 const StockContainer: React.FC<Props> = ({ ticker }) => {
   const server_uri = "http://192.168.2.210:5000";
   const url = `${server_uri}/predict/${ticker}`;
-  const [price, setPrice] = useState<number>(0);
+  const [price, setPrice] = useState<string>("Loading...");
   const [date, setDate] = useState<Date>(new Date());
 
   const today = new Date();
@@ -27,11 +27,16 @@ const StockContainer: React.FC<Props> = ({ ticker }) => {
       setPrice(fprice);
     }
     getData();
-    if (today < marketClose) {
+    if (today.getUTCHours() < marketClose.getUTCHours()) {
       setDate(today);
     } else {
       const tomorrow = new Date(today);
       tomorrow.setDate(today.getDate() + 1);
+      if (tomorrow.getDay() == 0) {
+        tomorrow.setDate(today.getDate() + 2);
+      } else if (tomorrow.getDay() == 6) {
+        tomorrow.setDate(today.getDate() + 3);
+      }
       setDate(tomorrow);
     }
   }, []);
