@@ -6,10 +6,12 @@ function App() {
       <article className="article-container">
         <h1 className="main-title">What is it ?</h1>
         <p className="main-text">
-          Stock predictions for stocks for today's closing price. Predictions
-          are made with a neural network.
+          Stock predictions of different companies for today's closing price.
+          Predictions are made with a neural network trained on approximately 10
+          years of data.
         </p>
       </article>
+      <br />
       <div className="stocks">
         <StockContainer ticker={"AAPL"} />
       </div>
