@@ -1,8 +1,9 @@
-from tf.keras.models import load_model
+from tensorflow.keras.models import load_model
 from .preprocessing import Preprocessor
 from .data_gathering import fetch_new_observation
 from datetime import datetime, time, timezone
 import os
+import traceback
 
 
 def get_prediction_for(ticker: str):
@@ -11,17 +12,20 @@ def get_prediction_for(ticker: str):
     """
     try:
         update_model(ticker)
-        path = f"./models/{ticker}_model"
+        path = os.path.join(os.path.dirname(__file__), f"./models/{ticker}_model")
         if not os.path.exists(path):
             return f"Model not trained on {ticker}"
         model = load_trained_model(ticker)
+        if model is None:
+            return
         new_data = fetch_new_observation(ticker)
         x, _, proc = preprocess(new_data)
         pred = model.predict(x)
-        unscaled = proc.unscale_target(pred)
+        unscaled = proc.unscale_target(pred).flatten()
         return unscaled[-1]
     except Exception:
         print(f"Could not find model for company {ticker}")
+        print(traceback.format_exc())
 
 
 def update_model(ticker):
@@ -41,7 +45,7 @@ def update_model(ticker):
 def after_market_close():
     close = time(20, 0, 0)
     today = datetime.today().astimezone(tz=timezone.utc).date()
-    market_close = datetime.combine(today, close)
+    market_close = datetime.combine(today, close).astimezone(tz=timezone.utc)
     now = datetime.now().astimezone(tz=timezone.utc)
     return now > market_close
 
@@ -67,10 +71,12 @@ def load_trained_model(ticker: str):
     Loads in trained model for the given ticker
     """
     try:
-        model = load_model(f"./models/{ticker}_model")
+        path = os.path.join(os.path.dirname(__file__), f"./models/{ticker}_model")
+        model = load_model(path)
         return model
     except Exception:
         print(f"An error occured while trying to load folder {ticker}_model in models")
+        print(traceback.format_exc())
 
 
 def save_model(model, ticker: str):
