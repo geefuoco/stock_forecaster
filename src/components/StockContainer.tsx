@@ -7,9 +7,13 @@ interface Props {
 }
 
 const StockContainer: React.FC<Props> = ({ ticker }) => {
-  const hostname = "http://192.168.2.210:5000";
-  const url = `${hostname}/predict/${ticker}`;
+  const server_uri = "http://192.168.2.210:5000";
+  const url = `${server_uri}/predict/${ticker}`;
   const [price, setPrice] = useState<number>(0);
+  const [date, setDate] = useState<Date>(new Date());
+
+  const today = new Date();
+  const marketClose = new Date(today.toLocaleDateString() + " 8:00:00 PM");
 
   useEffect(() => {
     async function getData() {
@@ -18,21 +22,26 @@ const StockContainer: React.FC<Props> = ({ ticker }) => {
         Accept: "application/json",
       };
       const result = await fetch(url, { headers });
-      console.log(result.body);
       const json = await result.json();
-      const fname = json["name"];
       const fprice = json["price"];
       setPrice(fprice);
     }
     getData();
+    if (today < marketClose) {
+      setDate(today);
+    } else {
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+      setDate(tomorrow);
+    }
   }, []);
 
   return (
     <div className="stock-container">
       <h2 className="stock-name">{ticker}</h2>
+      <h3>Prediction for {date.toLocaleDateString()}</h3>
       <Suspense fallback={"Loading..."}>
-        <h3 className="stock-info">Yesterdays Close Price: 146.50</h3>
-        <h3 className="stock-price">{price}</h3>
+        <h3 className="stock-price">$ {price}</h3>
       </Suspense>
     </div>
   );
