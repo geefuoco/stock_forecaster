@@ -14,6 +14,14 @@ function App() {
       <br />
       <div className="stocks">
         <StockContainer ticker={"AAPL"} />
+        <StockContainer ticker={"MSFT"} />
+        <StockContainer ticker={"META"} />
+        <StockContainer ticker={"NFLX"} />
+        <StockContainer ticker={"NVDA"} />
+        <StockContainer ticker={"SPY"} />
+        <StockContainer ticker={"TSLA"} />
+        <StockContainer ticker={"GOOG"} />
+        <StockContainer ticker={"AMZN"} />
       </div>
     </main>
   );
