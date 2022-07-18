@@ -13,11 +13,6 @@ host = "http://192.168.2.210"
 port = 3000
 
 
-@app.route("/")
-def index():
-    return {"text": "hello"}
-
-
 @app.route("/predict/<ticker>", methods=["options"])
 def options_prediction(ticker: str):
     resp = Response(status=200)
@@ -30,7 +25,7 @@ def options_prediction(ticker: str):
 @cache.cached()
 def prediction(ticker: str):
     prediction = model_handler.get_prediction_for(ticker)
-    prediction = "{:.2f}".format(prediction)
+    prediction = "{:.2f}".format(float(prediction))
     resp = jsonify({"price": prediction})
     resp.headers["Access-Control-Allow-Origin"] = f"{host}:{port}"
     resp.headers["Access-Control-Allow-Headers"] = "Content-Type"

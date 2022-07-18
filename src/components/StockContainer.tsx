@@ -13,7 +13,7 @@ const StockContainer: React.FC<Props> = ({ ticker }) => {
   const [date, setDate] = useState<Date>(new Date());
 
   const today = new Date();
-  const marketClose = new Date(today.toLocaleDateString() + " 8:00:00 PM");
+  const marketClose = new Date(today.toLocaleDateString() + " 4:00:00 PM");
 
   useEffect(() => {
     async function getData() {
@@ -47,7 +47,7 @@ const StockContainer: React.FC<Props> = ({ ticker }) => {
       <h3 className="stock-date">Prediction for {date.toLocaleDateString()}</h3>
       <Suspense fallback={"Loading..."}>
         {price ? (
-          <span className="stock-price">{price}</span>
+          <span className="stock-price">${price}</span>
         ) : (
           <span className="stock-price">Loading...</span>
         )}

@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 __pycache__
+*.ipynb
+*.ipynb*
 *.env
 node_modules
 dist
