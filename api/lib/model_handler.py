@@ -1,12 +1,13 @@
 from tensorflow.keras.models import load_model
 from .preprocessing import Preprocessor
 from .data_gathering import fetch_new_observation
-from datetime import datetime, time, timezone
+from datetime import datetime, time, timezone, timedelta
 import os
 import traceback
 
 
 _data_path = os.path.join(os.path.dirname(__file__), "./data/")
+next_update = None
 
 
 def get_prediction_for(ticker: str):
@@ -64,8 +65,15 @@ def update_model(ticker):
     """
     Update the model on newest data if it is available
     """
+    global next_update
     if not after_market_close():
+        print("Not after market close")
         return
+    now = datetime.today().astimezone(tz=timezone.utc)
+    if next_update is not None and not now >= next_update:
+        print("Not time to update yet")
+        return
+    next_update = datetime.today().astimezone(tz=timezone.utc) + timedelta(1)
     print("updating model")
     new_data = fetch_new_observation(ticker)
     if new_data is not None:
@@ -76,11 +84,12 @@ def update_model(ticker):
 
 
 def after_market_close():
-    close = time(20, 0, 0)
     today = datetime.today().astimezone(tz=timezone.utc).date()
-    market_close = datetime.combine(today, close).astimezone(tz=timezone.utc)
+    market_close = datetime(
+        today.year, today.month, today.day, 20, 0, 0, tzinfo=timezone.utc
+    )
     now = datetime.now().astimezone(tz=timezone.utc)
-    return now > market_close and now.weekday < 5
+    return now > market_close and now.weekday() < 5
 
 
 def train_on_new_data(model, new_data):

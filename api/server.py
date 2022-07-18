@@ -4,13 +4,18 @@ from lib import model_handler
 
 config = {"CACHE_TYPE": "SimpleCache", "CACHE_DEFAULT_TIMEOUT": 300}
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../dist", static_url_path="/")
 
 app.config.from_mapping(config)
 cache = Cache(app)
 
-host = "http://192.168.2.210"
-port = 3000
+host = "0.0.0.0"
+port = 8000
+
+
+@app.route("/")
+def index():
+    return app.send_static_file("index.html")
 
 
 @app.route("/predict/<ticker>", methods=["options"])

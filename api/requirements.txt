@@ -5,3 +5,4 @@ pandas==1.4.2
 pandas-datareader
 scikit-learn==1.1.0
 tensorflow==2.9.1
+Flask-Caching=2.0.0
