@@ -20,4 +20,4 @@ RUN pip install -r ./requirements.txt
 ENV FLASK_ENV production
 
 EXPOSE 3000
-CMD ["gunicorn", "-b", ":3000", "server:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:3000", "--timeout", "600", "server:app"]
