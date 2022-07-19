@@ -9,8 +9,10 @@ app = Flask(__name__, static_folder="../dist", static_url_path="/")
 app.config.from_mapping(config)
 cache = Cache(app)
 
-host = "0.0.0.0"
-port = 8000
+host = "192.168.2.210"
+port = 3000
+# origin = f"{host}:{port}"
+origin = "*"
 
 
 @app.route("/")
@@ -21,7 +23,7 @@ def index():
 @app.route("/predict/<ticker>", methods=["options"])
 def options_prediction(ticker: str):
     resp = Response(status=200)
-    resp.headers["Access-Control-Allow-Origin"] = f"{host}:{port}"
+    resp.headers["Access-Control-Allow-Origin"] = origin
     resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
     return resp
 
@@ -32,6 +34,6 @@ def prediction(ticker: str):
     prediction = model_handler.get_prediction_for(ticker)
     prediction = "{:.2f}".format(float(prediction))
     resp = jsonify({"price": prediction})
-    resp.headers["Access-Control-Allow-Origin"] = f"{host}:{port}"
+    resp.headers["Access-Control-Allow-Origin"] = origin
     resp.headers["Access-Control-Allow-Headers"] = "Content-Type"
     return resp

@@ -7,8 +7,8 @@ interface Props {
 }
 
 const StockContainer: React.FC<Props> = ({ ticker }) => {
-  const server_uri = "http://0.0.0.0:8000";
-  const url = `${server_uri}/predict/${ticker}`;
+  // const server_uri = "http://localhost:5000";
+  const url = `/predict/${ticker}`;
   const [price, setPrice] = useState<string>();
   const [date, setDate] = useState<Date>(new Date());
 
