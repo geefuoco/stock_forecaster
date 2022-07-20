@@ -29,7 +29,7 @@ class Preprocessor:
         data = self.create_25_ma(data, [target_column])
         data = self.timelag_data(data, time_lag).dropna()
         target = data[[target_column]]
-        data = data.drop(target_column, axis=1)
+        data = data.drop([target_column, "Close_50_ema", "Close_25_ma"], axis=1)
         x_scaled, y_scaled = self.scale(data, target)
         return x_scaled, y_scaled
 
